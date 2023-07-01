@@ -1,0 +1,21 @@
+{
+  "name": "bimlaunchertechnichalassessment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node ./solution/main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "axios": "^1.4.0",
+    "util": "^0.12.5",
+    "xml2js": "^0.6.0",
+    "xmlbuilder2": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/xml2js": "^0.4.11"
+  }
+}
