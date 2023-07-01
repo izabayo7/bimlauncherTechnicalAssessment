@@ -5,12 +5,12 @@ import { convert, create } from "xmlbuilder2";
 import { parseString } from "xml2js";
 import { promisify } from "util";
 
+// Constants
 const userName = "poleary";
 const password = "Auth3nt1c";
 const parseStringPromise = promisify(parseString);
 
-const date = new Date();
-
+// Generate project base code
 const projectBaseCode = `bimlauncherAssignment-${
   // today's date in format YYYYMMDD
   new Date().toISOString().split("T")[0].replace(/-/g, "")
@@ -28,8 +28,13 @@ axios.defaults.headers.common["Authorization"] = `Basic ${Buffer.from(
 // set axios base url
 axios.defaults.baseURL = "https://ea1.aconex.com/api";
 
+// Cache for project schemas
 const projectSchemaCache: { [key: string]: RegisterSchema } = {};
 
+/**
+ * Parses the RegisterSchema XML and returns a RegisterSchema object
+ * @param json 
+ */
 export function parseRegisterSchema(json: string): any {
   const data = JSON.parse(json);
 
@@ -100,6 +105,12 @@ export function parseRegisterSchema(json: string): any {
   return registerSchema;
 }
 
+/**
+ *  Creates a document
+ * @param postXML 
+ * @param url 
+ * @param fileData 
+ */
 export async function uploadDocument(
   postXML: string,
   url: string,
@@ -137,6 +148,11 @@ ${fileData.fileContents}
   }
 };
 
+/**
+ * 
+ * @param projectId 
+ * @param documentId 
+ */
 export async function downloadDocument(
   projectId: string,
   documentId: string
@@ -157,15 +173,20 @@ export async function downloadDocument(
   };
 };
 
+/**
+ * Fetch documents from a project
+ * @param projectId 
+ * @param query 
+ */
 export async function getDocuments(
   projectId: string,
   query = projectBaseCode
 ): Promise<Document[]> {
-    // console.log("\n\n Reading projects zitaranajyaho \n\n")
+
   const response = await axios.get(
     `/projects/${projectId}/register?return_fields=title,docno,statusid,doctype,doctype,filename,revision,discipline&search_query=${query}`
   );
-await sleep(2000);
+  await sleep(2000);
   const parsedObject: SearchResponse = (await parseStringPromise(
     response.data
   )) as SearchResponse;
@@ -203,6 +224,11 @@ await sleep(2000);
   return documents;
 };
 
+/**
+ * Move documents from one project to another
+ * @param sourceProjectId 
+ * @param destinationProjectId 
+ */
 export async function transferDocuments(
   sourceProjectId: string,
   destinationProjectId: string
@@ -251,7 +277,10 @@ export async function transferDocuments(
   return filteredDocuments;
 };
 
-// Filter out non-mandatory fields from EntityCreationSchemaFields
+/**
+ * Filter out non-mandatory fields from EntityCreationSchemaFields
+ * @param fields 
+ */
 export function findMandatoryFields(fields: any) {
   return fields.filter((field: any) => {
     const mandatoryStatus =
@@ -260,6 +289,10 @@ export function findMandatoryFields(fields: any) {
   });
 }
 
+/**
+ * Generate a random document based on the schema of a project
+ * @param schema 
+ */
 export function generateXML(schema: any) {
   const root = create().ele("Document");
   schema.EntityCreationSchemaFields[0].SingleValueSchemaField.forEach(
@@ -307,6 +340,10 @@ export function generateXML(schema: any) {
   return xml;
 }
 
+/**
+ * Fetch the schema of a project
+ * @param projectId 
+ */
 export async function getProjectSchema(projectId: string): Promise<RegisterSchema> {
 
     if (projectSchemaCache[projectId])
@@ -341,6 +378,11 @@ export async function getProjectSchema(projectId: string): Promise<RegisterSchem
   return registerSchema;
 };
 
+/**
+ * Construct a document object from XML and a document
+ * @param xml 
+ * @param document 
+ */
 export function updateXMLWithDocument(xml: string, document: any) {
   const updatedRoot :any = convert(xml, { format: "object" });
 
@@ -356,6 +398,11 @@ export function updateXMLWithDocument(xml: string, document: any) {
   return updatedXml;
 }
 
+/**
+ * Remove a list of fields from XML
+ * @param xml 
+ * @param fields 
+ */
 export function removeFieldsFromXML(xml: string, fields: string[]) {
     const updatedRoot :any = convert(xml, { format: "object" });
     
@@ -367,6 +414,12 @@ export function removeFieldsFromXML(xml: string, fields: string[]) {
     return updatedXml;
 }
 
+/**
+ * Find the Id using the value of a field
+ * @param schema 
+ * @param field 
+ * @param value 
+ */
 export function findIdFromValue(
   schema: any,
   field: string,
@@ -387,6 +440,10 @@ export function findIdFromValue(
   return 0;
 }
 
+/**
+ * Sleep for a number of milliseconds
+ * @param ms 
+ */
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
