@@ -1,3 +1,5 @@
+[![Google Slides](https://www.gstatic.com/images/branding/product/1x/slides_2020q4_48dp.png) PRESENTAITION](https://docs.google.com/presentation/d/12c0UW92ZkIfzz-9LuHwyAzq368XPctTgGNCEdNzgZQk/edit?usp=sharing)
+
 # Transfer documents between 2 Aconex projects
 
 This is a solution to the problem of transferring documents between two projects in Aconex, an online collaboration platform for managing construction projects. The solution is implemented in TypeScript and uses Node.js runtime. It includes integration tests to ensure successful transfers.
