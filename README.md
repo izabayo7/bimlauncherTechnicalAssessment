@@ -14,28 +14,35 @@ To run this solution, you need to have the following installed:
 Follow the steps below to build and run the solution:
 
 1. Clone the repository: `git clone <repository-url>`
+<!-- if one want's to install it locall do the things below or if you want to use docker do this -->
+
+### if you want to run it normally
 2. Install the dependencies: `yarn install` or `npm install`
 3. Update the `main.ts` file with your Aconex project IDs and document filenames if necessary.
 5. Run the solution: `yarn start` or `npm start`
+
+### if you want to run it with docker
+2. Build the docker image: `docker-compose build`
+3. Run the container `docker-compose up`
 
 The solution will perform the following steps:
 
 1. Upload 3 documents to the source project specified in `sourceProjectId`:
    - Generate XML data for each document using the project schema.
    - Upload the documents to the source project using the Aconex API.
-2. Wait for a brief delay to allow the documents to be processed. 
-3. Retrieve the documents from the source project to verify successful upload.[This is because of perfomance throttling](https://help.aconex.com/DisplayContent/aconex-web-services-performance-throttling)
-4. Transfer the uploaded documents from the source project to the destination project specified in `destinationProjectId`.
-5. Wait for a brief delay to allow the documents to be transferred.
-6. Retrieve the documents from the destination project to verify successful transfer.
-7. Check if each document in the destination project exists in the source project.
-8. Upload a newer version of the first document in the source project:
+   - Wait for a brief delay to allow the documents to be processed. [This is because of perfomance throttling](https://help.aconex.com/DisplayContent/aconex-web-services-performance-throttling) 
+   - Retrieve the documents from the source project to verify successful upload.
+2. Transfer the uploaded documents from the source project to the destination project specified in `destinationProjectId`.
+   - Wait for a brief delay to allow the documents to be transferred.
+   - Retrieve the documents from the destination project to verify successful transfer.
+   - Check if each document in the destination project exists in the source project.
+3. Upload a newer version of the first document in the source project:
    - Generate updated XML data for the document, removing the "DocumentNumber" field.
    - Upload the updated document to the source project using the Aconex API.
-- This proves that my solution supports multi-version documents
-9. Wait for a brief delay to allow the document to be processed.
-10. Retrieve the documents with the same document number from the source project to verify successful supersede.
-11. Check if the first document in the source project has been successfully superseded.
+   - Wait for a brief delay to allow the document to be processed.
+   - Retrieve the documents with the same document number from the source project to verify successful supersede.
+   - Check if the first document in the source project has been successfully superseded.
+   - This proves that my solution supports multi-version documents
 
 ## Notes
 

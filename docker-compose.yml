@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  solution:
+    image: izabayo7/bimlauncher-technical-assessment:latest
+    build:
+      context: .
